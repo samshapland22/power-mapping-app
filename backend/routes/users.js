@@ -34,7 +34,7 @@ users.post("/register", async (req, res) => {
       user: user,
       accessToken: accessToken.token,
       accessTokenExpires: accessToken.expires,
-      refreshToken: "Bearer " + refreshToken,
+      refreshToken: refreshToken,
     });
   } catch (error) {
     console.log(error);
@@ -50,7 +50,7 @@ users.post("/token", (req, res) => {
   if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403);
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
     if (err) return res.status(403).json(err);
-    const accessToken = generateAccessToken({ name: user.username });
+    const accessToken = generateAccessToken(user);
     res.json({ accessToken: accessToken });
   });
 });
@@ -78,7 +78,7 @@ users.post("/login", async (req, res) => {
         user: user,
         accessToken: accessToken.token,
         accessTokenExpires: accessToken.expires,
-        refreshToken: "Bearer " + refreshToken,
+        refreshToken: refreshToken,
       });
     } else {
       res.status(401).json({ success: false, message: "incorrect password" });

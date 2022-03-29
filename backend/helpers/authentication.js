@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const generateAccessToken = (user) => {
   const _id = user.id;
-  const expiresIn = "2m";
+  const expiresIn = "60m";
   const payload = {
     sub: _id,
     iat: Date.now(),
